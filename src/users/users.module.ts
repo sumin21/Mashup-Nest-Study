@@ -1,4 +1,11 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
+
+import { StatusMiddleware } from 'src/users/middlewares/status.middleware';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
@@ -6,4 +13,10 @@ import { UsersService } from './users.service';
   controllers: [UsersController],
   providers: [UsersService],
 })
-export class UsersModule {}
+export class UsersModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(StatusMiddleware)
+      .forRoutes({ path: 'users/status', method: RequestMethod.POST });
+  }
+}
