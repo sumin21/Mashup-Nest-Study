@@ -7,11 +7,12 @@ import {
 
 import { StatusMiddleware } from 'src/users/middlewares/status.middleware';
 import { UsersController } from './users.controller';
+import { UsersGateway } from './users.gateway';
 import { UsersService } from './users.service';
 
 @Module({
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService, UsersGateway],
 })
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
