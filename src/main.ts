@@ -7,8 +7,8 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       // 이상한 값이 우리의 validator에 도달하지 않게
-      // whitelist: true,
-      // forbidNonWhitelisted: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
       // 받은 값을 원하는 타입으로 변환
       transform: true,
     }),

@@ -1,9 +1,10 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 
 @Injectable()
-export class StatusMiddleware implements NestMiddleware {
+export class UsersMiddleware implements NestMiddleware {
   use(req: any, res: any, next: () => void) {
-    console.log('pass middleware...');
+    console.log('middleware...');
+
     next();
   }
 }

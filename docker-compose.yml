@@ -1,0 +1,30 @@
+version: "3.7"
+services:
+  web:
+    container_name: "web"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - febnine-net
+    depends_on:
+      - mysql
+  mysql:
+    container_name: "mysql"
+    image: mysql
+    environment:
+      MYSQL_TCP_PORT: "3306"
+      MYSQL_ROOT_PASSWORD: process.env.DB_PASSWORD
+      MYSQL_DATABASE: "docker_lab"
+    ports:
+      -  "3366:3306"
+    networks:
+      - febnine-net
+    volumes:
+      - mysql:/var/lib/mysql
+volumes:
+  mysql:
+networks:
+  febnine-net:

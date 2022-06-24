@@ -5,19 +5,16 @@ import {
   RequestMethod,
 } from '@nestjs/common';
 
-import { StatusMiddleware } from 'src/users/middlewares/status.middleware';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserRepository } from './repositories/users.repository';
 import { UsersController } from './users.controller';
 import { UsersGateway } from './users.gateway';
+import { UsersMiddleware } from './middlewares/users.middleware';
 import { UsersService } from './users.service';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([UserRepository])], //UserRepository 등록
   controllers: [UsersController],
-  providers: [UsersService, UsersGateway],
+  providers: [UsersService],
 })
-export class UsersModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(StatusMiddleware)
-      .forRoutes({ path: 'users/status', method: RequestMethod.POST });
-  }
-}
+export class UsersModule {}

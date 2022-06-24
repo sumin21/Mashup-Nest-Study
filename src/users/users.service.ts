@@ -1,45 +1,39 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 
 import { CreateUserDto } from './dto/create-user.dto';
-import { StatusDto } from './dto/status.dto';
-import { User } from './entities/user.entity';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/users.entity';
+import { UserRepository } from './repositories/users.repository';
 
 @Injectable()
 export class UsersService {
-  private users: User[] = [
-    {
-      id: 1,
-      name: 'test1',
-      age: 10,
-    },
-  ];
+  //생성자 부분에 가져와 사용한다.
+  constructor(
+    @InjectRepository(UserRepository) private userRepository: UserRepository,
+  ) {}
 
-  getAll(): User[] {
-    return this.users;
+  // getAll(): User[] {
+  //   return this.users;
+  // }
+  createUser(userData: CreateUserDto): Promise<boolean> {
+    return this.userRepository.onCreate(userData);
+  }
+  // mysql에 없는지 확인
+  // 없다면 INSERT
+  // 있다면 ERROR 409
+
+  getUserAll(): Promise<User[]> {
+    return this.userRepository.findAll();
   }
 
-  getOne(id: number): User {
-    const user = this.users.find((user) => user.id === id);
-    if (!user) {
-      throw new NotFoundException(`User with ID ${id} not found`);
-    }
-    return user;
+  findByUserOne(id: number): Promise<User> {
+    return this.userRepository.findById(id);
   }
-
-  deleteOne(id: number) {
-    this.getOne(id);
-    this.users = this.users.filter((user) => user.id !== id);
+  setUser(id: number, updateUserDto: UpdateUserDto): Promise<boolean> {
+    return this.userRepository.onChnageUser(id, updateUserDto);
   }
-
-  create(userData: CreateUserDto) {
-    this.users.push({
-      id: this.users.length + 1,
-      ...userData,
-    });
-    return this.users;
-  }
-
-  status(statusData: StatusDto) {
-    return `(After DTO) status is ${statusData}`;
+  deleteUser(id: number): Promise<boolean> {
+    return this.userRepository.onDelete(id);
   }
 }

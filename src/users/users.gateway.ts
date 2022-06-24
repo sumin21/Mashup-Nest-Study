@@ -27,9 +27,9 @@ export class UsersGateway {
   private logger: Logger = new Logger('EventsGateway');
 
   public handleConnection(client: Socket): void {
-    console.log('hi');
+    console.log('hisss');
     this.client[client.id] = client;
-    this.logger.log(`Client Connected : ${client.id}`);
+    this.logger.log(`Client Connected!! : ${client.id}`);
   }
 
   public handleDisconnect(client: Socket): void {
